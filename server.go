@@ -162,7 +162,7 @@ func (u HTTPUpgrader) Upgrade(r *http.Request, w http.ResponseWriter) (conn net.
 		return conn, rw, hs, err
 	}
 
-	for k, v := range u.Header {
+	for k, v := range r.Header {
 		fmt.Printf("Header: %s, %s\n", k, v)
 	}
 
