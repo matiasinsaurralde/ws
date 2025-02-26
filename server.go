@@ -153,6 +153,7 @@ type HTTPUpgrader struct {
 // bufio.ReadWriter. On successful handshake it returns Handshake struct
 // describing handshake info.
 func (u HTTPUpgrader) Upgrade(r *http.Request, w http.ResponseWriter) (conn net.Conn, rw *bufio.ReadWriter, hs Handshake, err error) {
+	fmt.Println("Custom upgrade is used...")
 	// Hijack connection first to get the ability to write rejection errors the
 	// same way as in Upgrader.
 	conn, rw, err = hijack(w)
