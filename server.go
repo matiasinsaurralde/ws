@@ -145,6 +145,12 @@ type HTTPUpgrader struct {
 	//
 	// RejectConnectionError could be used to get more control on response.
 	Negotiate func(httphead.Option) (httphead.Option, error)
+
+	DebugHeaderFn func(key string, value string)
+}
+
+func (u HTTPUpgrader) SetDebugHeaderFn(fn func(key string, value string)) {
+	u.DebugHeaderFn = fn
 }
 
 // Upgrade upgrades http connection to the websocket connection.
@@ -160,6 +166,10 @@ func (u HTTPUpgrader) Upgrade(r *http.Request, w http.ResponseWriter) (conn net.
 	if err != nil {
 		httpError(w, err.Error(), http.StatusInternalServerError)
 		return conn, rw, hs, err
+	}
+
+	for k, v := range u.Header {
+		u.DebugHeaderFn(k, v[0])
 	}
 
 	// See https://tools.ietf.org/html/rfc6455#section-4.1
